@@ -1,0 +1,89 @@
+// Here you can add other styles
+.main .container-fluid {
+    padding: 0 20px;
+}
+
+.breadcrumb {
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.sidebar .nav .nav-item ul li a {
+    font-size: 13px;
+}
+
+ul.nav-dropdown-item>li.nav-item {
+    background-color: #182126;
+}
+
+ul.nav-dropdown-item>li.nav-item>a>i {
+    font-size: 11px !important;
+}
+
+.card-header-button {
+    padding-bottom: 6px;
+}
+
+//button
+.btn-sm,
+.btn-group-sm>.btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25;
+}
+
+//react-table
+.ReactTable .rt-thead .rt-th,
+.ReactTable .rt-thead .rt-td {
+    padding: 10px 5px !important;
+    font-weight: bold;
+}
+
+.ReactTable .rt-tbody .rt-td {
+    border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+    &:last-child {
+        border-right: 1px solid rgba(0, 0, 0, 0.02) !important;
+    }
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #cfd8dc;
+}
+
+table.table>thead>tr>th {
+    text-align: center;
+}
+
+table.table-hover tbody tr:hover {
+    background-color: #dfe8f6!important;
+}
+
+table.table td {
+    padding: 0.5rem;
+}
+
+.btn-xs,
+.btn-group-xs>.btn,
+.btn-group-xs>.btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+}
+
+//========= Modal ===========//
+.modal-header {
+    padding: 10px;
+    .modal-title {
+        font-size: 1.2rem;
+    }
+}
+
+.DayPickerInput {
+    display: block !important;
+}
+
+//========= Margin & Padding =======//
+.margin-bottom-5{
+    margin-bottom: 10px;
+}
