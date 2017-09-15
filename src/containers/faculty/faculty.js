@@ -55,12 +55,20 @@ class Faculty extends Component {
         })
     }
 
-    handleSubmit = (values) => {
+    handleSubmit_ = (values) => {
         this.props.saveFaculty(values).then(() => {
+            if (!this.props.faculty.error) {
+                this.props.loadFacultys();
+                this.toggle();
+            }
+        })
+    }
+
+    handleSubmit = (values) => {
+        this.props.saveFaculty(values, () => {
             this.props.loadFacultys();
             this.toggle();
         })
-
     }
 
     facultySearch(term) {

@@ -2,6 +2,11 @@ import axios from 'axios';
 import config from '../config';
 import * as types from './facultyType';
 
+export const loadFacultys_ = (value) => {
+    return (dispatch) => {
+        dispatch({ type: types.LOAD_FACULTYS });
+    }
+}
 export const loadFacultys = (term = '') => async (dispatch) => {
     try {
         dispatch({ type: types.LOAD_FACULTYS })   //Show Loading
@@ -16,24 +21,9 @@ export const loadFacultys = (term = '') => async (dispatch) => {
             throw Error(config.ErrorInvalidTokenText)
         }
 
-        dispatch(loadFacultysSuccess(response.data))
+        dispatch(facultySuccess(types.LOAD_FACULTYS_SUCCESS, response.data));
     } catch (err) {
-        dispatch(loadFacultysFailure(err));
-    }
-
-}
-
-export const loadFacultysSuccess = (facultys) => {
-    return {
-        type: types.LOAD_FACULTYS_SUCCESS,
-        payload: facultys
-    }
-}
-
-export const loadFacultysFailure = (err) => {
-    return {
-        type: types.LOAD_FACULTYS_FAILURE,
-        payload: err
+        dispatch(facultyFailure(types.LOAD_FACULTYS_FAILURE, err));
     }
 }
 
@@ -55,22 +45,9 @@ export const saveFaculty = (values) => async (dispatch) => {
         if (response.data.status === 421) {
             throw Error("รหัสซ้ำ!! กรุณาเปลี่ยนรหัสใหม่");
         }
-        dispatch(saveFacultySuccess())
+        dispatch(facultySuccess(types.SAVE_FACULTY_SUCCESS));
     } catch (err) {
-        dispatch(saveFacultyFailure(err));
-    }
-}
-
-export const saveFacultyFailure = (err) => {
-    return {
-        type: types.SAVE_FACULTY_FAILURE,
-        payload: err
-    }
-}
-
-export const saveFacultySuccess = () => {
-    return {
-        type: types.SAVE_FACULTY_SUCCESS
+        dispatch(facultyFailure(types.SAVE_FACULTY_FAILURE, err));
     }
 }
 
@@ -88,9 +65,9 @@ export const deleteFaculty = (id) => async (dispatch) => {
             throw Error(config.ErrorInvalidTokenText);
         }
 
-        dispatch(deleteFacultySuccess());
+        dispatch({ type: types.DELETE_FACULTY_SUCCESS });
     } catch (err) {
-        dispatch(deleteFacultyFailure(err));
+        dispatch(facultyFailure(types.SAVE_FACULTY_FAILURE, err));
     }
 }
 export const deleteFacultySuccess = () => {
@@ -106,6 +83,7 @@ export const deleteFacultyFailure = (err) => {
     }
 }
 
+//======== get Faculty =============//
 export const loadFaculty = (id) => async (dispatch) => {
     try {
         dispatch(resetFaculty());
@@ -115,11 +93,11 @@ export const loadFaculty = (id) => async (dispatch) => {
             { headers: { authorization: localStorage.getItem('token') } })
 
         if (response.status !== 200) {
-            throw Error(response.statusText);
+            throw new Error(response.statusText);
         }
 
         if (response.data.invalidToken) {
-            throw Error(config.ErrorInvalidTokenText);
+            throw new Error(config.ErrorInvalidTokenText);
         }
 
         dispatch(loadFacultySuccess(response.data));
@@ -145,5 +123,19 @@ export const loadFacultyFailure = (err) => {
 export const resetFaculty = () => {
     return {
         type: types.RESET_FACULTY
+    }
+}
+
+const facultySuccess = (type, payload) => {
+    return {
+        type,
+        payload
+    }
+}
+
+const facultyFailure = (type, payload) => {
+    return {
+        type,
+        payload
     }
 }

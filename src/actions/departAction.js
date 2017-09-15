@@ -4,13 +4,9 @@ import * as types from './departType';
 
 export const loadDeparts = (term = '') => {
   return (dispatch) => {
-    dispatch({
-      type: types.LOAD_DEPARTS
-    })
+    dispatch({ type: types.LOAD_DEPARTS })
     axios.get(`${config.ROOT_URL}/departs?term=${term}`, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
+      headers: { authorization: localStorage.getItem('token') }
     }).then(response => {
       if (response.data.invalidToken) {
         throw Error(config.ErrorInvalidTokenText);
@@ -20,10 +16,9 @@ export const loadDeparts = (term = '') => {
         throw Error(response.statusText);
       }
       dispatch(departSuccess(types.LOAD_DEPARTS_SUCCESS, response.data));
+    }).catch(err => {
+      dispatch(departFailure(types.LOAD_DEPARTS_FAILURE, err))
     })
-      .catch(err => {
-        dispatch(departFailure(types.LOAD_DEPARTS_FAILURE, err))
-      })
   }
 }
 
@@ -47,7 +42,7 @@ export const saveDepart = (values, callback) => {
       if (response.data.status === 421) {
         throw Error("รหัสซ้ำ!! กรุณาเปลี่ยนรหัสใหม่");
       }
-      dispatch({type: types.SAVE_DEPART_SUCCESS});
+      dispatch({ type: types.SAVE_DEPART_SUCCESS });
       callback();
     }).catch(err => {
       dispatch(departFailure(types.SAVE_DEPART_FAILURE, err));
@@ -56,11 +51,6 @@ export const saveDepart = (values, callback) => {
 }
 
 //======== DELETE =============//
-export const deleteABC = (id, callback)=>{
-  return (dispatch)=>{
-    dispatch({type: types.DELETE_DEPART})
-  }
-}
 export const deleteDepart = (id, callback) => {
   return (dispatch) => {
     dispatch({

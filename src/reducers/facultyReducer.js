@@ -27,7 +27,7 @@ export default (state = initialState, action) => {
             return { ...state, facultySave: { faculty: null, loading: false, error: false } }
         case types.SAVE_FACULTY_FAILURE:
             error = action.payload || { message: action.payload.message };
-            return { ...state, facultySave: { faculty: null, loading: true, error: error } }
+            return { ...state, facultySave: { faculty: null, loading: false, error: error } }
 
         //Delete
         case types.DELETE_FACULTY:
