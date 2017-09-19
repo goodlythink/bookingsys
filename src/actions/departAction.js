@@ -68,9 +68,7 @@ export const deleteDepart = (id, callback) => {
         throw Error(config.ErrorInvalidTokenText);
       }
 
-      dispatch({
-        type: types.DELETE_DEPART_SUCCESS
-      });
+      dispatch({ type: types.DELETE_DEPART_SUCCESS});
       callback()
     }).catch(err => {
       dispatch(departFailure(types.DELETE_DEPART_FAILURE, err))

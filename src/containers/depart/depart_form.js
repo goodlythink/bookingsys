@@ -45,8 +45,6 @@ class DepartForm extends Component {
         })
 
         this.setState({ optionFacultys });
-
-        //console.log('option', optionFacultys);
     }
     render() {
         const { handleSubmit } = this.props;

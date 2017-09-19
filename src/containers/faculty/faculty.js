@@ -36,7 +36,7 @@ class Faculty extends Component {
             title: 'ยืนยันการลบ',
             message: 'คุณต้องการลบข้อมูลนี้ใช่หรือไม่',
             confirmLabel: 'ยืนยัน ลบทันที!!',
-            onConfirm: () => this.props.deleteFaculty(id).then(() => {
+            onConfirm: () => this.props.deleteFaculty(id , () => {
                 this.props.loadFacultys();
             })
         })
@@ -49,18 +49,9 @@ class Faculty extends Component {
     }
 
     handleEdit = (id) => {
-        this.props.loadFaculty(id).then(() => {
+        this.props.loadFaculty(id, () => {
             this.setState({ modalTitle: 'แก้ไข' })
             this.toggle();
-        })
-    }
-
-    handleSubmit_ = (values) => {
-        this.props.saveFaculty(values).then(() => {
-            if (!this.props.faculty.error) {
-                this.props.loadFacultys();
-                this.toggle();
-            }
         })
     }
 
