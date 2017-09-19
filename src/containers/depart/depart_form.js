@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 
-import { renderField, renderSelectFacultyField } from '../Utils';
+import { renderField } from '../Utils';
 import { Button, ModalBody, ModalFooter } from 'reactstrap';
 import { Loading, ErrorPage } from '../../components/layouts';
+import { SelectFacultys } from '../../components'
 
 class DepartForm extends Component {
     static propType = {
@@ -15,10 +16,14 @@ class DepartForm extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            optionFacultys: []
+        }
     }
 
     componentDidMount() {
         this.handleInitialize();
+        this.renderSelect();
     }
 
     onSubmit = (values) => {
@@ -33,20 +38,23 @@ class DepartForm extends Component {
         this.props.initialize(this.props.data[0]);
     }
 
+    renderSelect() {
+        let optionFacultys = []
+        this.props.dataFacultys.map(({ id, name }) => {
+            optionFacultys = [...optionFacultys, { value: id, label: name }]
+        })
+
+        this.setState({ optionFacultys });
+
+        //console.log('option', optionFacultys);
+    }
     render() {
         const { handleSubmit } = this.props;
         const { loading, error } = this.props.depart;
-        const facultys = this.props.dataFacultys;
+        const { optionFacultys } = this.state;
 
-        let optionFacultys = []
         return (
             <div>
-                {
-                    this.props.dataFacultys.map(({ id, name }) => {
-                        optionFacultys = [...optionFacultys, {value: id, label: name}]
-                    })                    
-                }
-
                 {!error && loading && <Loading />}
                 {error && <ErrorPage error={error.message} />}
                 <form>
@@ -54,7 +62,7 @@ class DepartForm extends Component {
                         <Field name="id" component="input" type="hidden" />
                         <Field name="code" component={renderField} type="text" label="รหัส" autoFocus />
                         <Field name="name" component={renderField} type="text" label="ชื่อแผนก" />
-                        <Field name="faculty_id" component={renderSelectFacultyField} label="หน่วยงาน" loadOptions={optionFacultys} />
+                        <Field name="faculty_id" component={SelectFacultys} label="หน่วยงาน" loadOptions={optionFacultys} />
                     </ModalBody>
 
                     <ModalFooter>
