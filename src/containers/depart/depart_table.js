@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import ReactTable from 'react-table';
 import reactTableDefaults from '../../components/utils/reactTableDefaults'
 import 'react-table/react-table.css'
 
 import { ButtonEdit, ButtonDelete } from '../../components';
 
-class FacultyItem extends Component {
+class DepartTable extends Component {
     constructor(props) {
         super(props)
         reactTableDefaults();
@@ -25,7 +27,7 @@ class FacultyItem extends Component {
 
     render() {
         //console.log('loading',this.props.loading);
-        const facultys = this.props.facultys;
+        const data = this.props.data;
         const loading = this.props.loading;
 
         const columns = [{
@@ -34,7 +36,7 @@ class FacultyItem extends Component {
             accessor: 'code',
             className: 'text-center'
         }, {
-            Header: 'ชื่อหน่วยงาน',
+            Header: 'ชื่อแผนก',
             accessor: 'name'
         }, {
             Header: '',
@@ -54,7 +56,7 @@ class FacultyItem extends Component {
                 <div className="col">
                     <ReactTable
                         className="-striped -highlight"
-                        data={facultys}
+                        data={data}
                         columns={columns}
                         loading={loading}
                     />
@@ -64,4 +66,12 @@ class FacultyItem extends Component {
     }
 }
 
-export default FacultyItem;
+DepartTable.propTypes = {
+    data: PropTypes.array.isRequired,
+    onEdit: PropTypes.func,
+    onDelete: PropTypes.func,
+    loading: PropTypes.bool.isRequired
+}
+
+export default DepartTable;
+

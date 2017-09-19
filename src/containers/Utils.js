@@ -4,3 +4,4 @@ export { default as ReactConfirmModalDialog } from '../components/utils/reactCon
 export { default as renderField } from '../components/utils/renderField';
 export { default as renderDateField } from '../components/utils/renderDateField';
 export { default as reactTableDefaults } from '../components/utils/reactTableDefaults';
+export { default as renderSelectFacultyField } from '../components/utils/renderSelectFacultyField';

@@ -8,7 +8,7 @@ import { Loading, ErrorPage } from '../../components/layouts';
 import { confirmModalDialog } from '../Utils'
 
 import { SearchBar, ButtonNew } from '../../components';
-import FacultyItem from './faculty_item';
+import FacultyTable from './faculty_table';
 import FacultyForm from './faculty_form';
 
 class Faculty extends Component {
@@ -103,7 +103,7 @@ class Faculty extends Component {
                         {(error || facultyDelete.error) && <ErrorPage error={error.message || facultyDelete.error.message} />}
                         {
                             !error &&
-                            <FacultyItem
+                            <FacultyTable
                                 facultys={facultys}
                                 onEdit={this.handleEdit}
                                 onDelete={this.handleDelete}

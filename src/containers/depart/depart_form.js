@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm, initialize } from 'redux-form';
 import { connect } from 'react-redux';
 
-import { renderField } from '../Utils';
+import { renderField, renderSelectFacultyField } from '../Utils';
 import { Button, ModalBody, ModalFooter } from 'reactstrap';
 import { Loading, ErrorPage } from '../../components/layouts';
 
@@ -11,6 +11,10 @@ class DepartForm extends Component {
     static propType = {
         onSubmit: PropTypes.func.isRequired,
         onToggle: PropTypes.func.isRequired
+    }
+
+    constructor(props) {
+        super(props);
     }
 
     componentDidMount() {
@@ -32,9 +36,17 @@ class DepartForm extends Component {
     render() {
         const { handleSubmit } = this.props;
         const { loading, error } = this.props.depart;
+        const facultys = this.props.dataFacultys;
 
+        let optionFacultys = []
         return (
             <div>
+                {
+                    this.props.dataFacultys.map(({ id, name }) => {
+                        optionFacultys = [...optionFacultys, {value: id, label: name}]
+                    })                    
+                }
+
                 {!error && loading && <Loading />}
                 {error && <ErrorPage error={error.message} />}
                 <form>
@@ -42,6 +54,7 @@ class DepartForm extends Component {
                         <Field name="id" component="input" type="hidden" />
                         <Field name="code" component={renderField} type="text" label="รหัส" autoFocus />
                         <Field name="name" component={renderField} type="text" label="ชื่อแผนก" />
+                        <Field name="faculty_id" component={renderSelectFacultyField} label="หน่วยงาน" loadOptions={optionFacultys} />
                     </ModalBody>
 
                     <ModalFooter>

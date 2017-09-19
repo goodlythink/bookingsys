@@ -3,13 +3,14 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadDeparts, deleteDepart, saveDepart, loadDepart, resetDepart } from '../../actions/departAction';
+import { loadFacultys } from '../../actions/facultyAction';
 
 import { Modal, ModalHeader } from 'reactstrap';
 import { Loading, ErrorPage } from '../../components/layouts';
 import { confirmModalDialog } from '../Utils'
 
 import { SearchBar, ButtonNew } from '../../components';
-import DepartItem from './depart_item';
+import DepartTable from './depart_table';
 import DepartForm from './depart_form';
 
 class Depart extends Component {
@@ -17,7 +18,8 @@ class Depart extends Component {
         super(props);
         this.state = {
             modal: false,
-            modalTitle: ''
+            modalTitle: '',
+            facultys: []
         }
     }
 
@@ -27,6 +29,7 @@ class Depart extends Component {
 
     componentDidMount() {
         this.props.loadDeparts();
+        this.props.loadFacultys();
     }
 
     handleNew = () => {
@@ -65,9 +68,16 @@ class Depart extends Component {
         })
     }
 
+    facultySearch = (term) => {
+        this.props.loadFacultys(term);
+    }
+
     render() {
         const { loading, error, departs } = this.props.departList;
+        const { facultys } = this.props.facultyList;
+
         const departSearch = _.debounce(term => { this.departSearch(term) }, 500);
+        const facultySearch = _.debounce(term => { this.facultySearch(term) }, 500);
 
         return (
             <div className="animated fadeIn">
@@ -90,7 +100,7 @@ class Depart extends Component {
 
                         {error && <ErrorPage error={error.message} />}
                         {!error &&
-                            <DepartItem
+                            <DepartTable
                                 data={departs}
                                 onEdit={this.handleEdit}
                                 onDelete={this.handleDelete}
@@ -105,6 +115,8 @@ class Depart extends Component {
                         data={this.props.departShow.depart}
                         onSubmit={this.handleSubmit}
                         onToggle={this.toggle}
+                        onSearchFacultyChange={facultySearch}
+                        dataFacultys={facultys}
                     />
                 </Modal>
             </div>
@@ -115,9 +127,10 @@ class Depart extends Component {
 const mapStateToProps = (state) => {
     return {
         departList: state.departs.departList,
-        departShow: state.departs.departShow
+        departShow: state.departs.departShow,
+        facultyList: state.facultys.facultyList
     }
 }
-export default connect(mapStateToProps, 
-    { loadDeparts, deleteDepart, saveDepart, loadDepart, resetDepart })
+export default connect(mapStateToProps,
+    { loadDeparts, deleteDepart, saveDepart, loadDepart, resetDepart, loadFacultys })
     (Depart);
