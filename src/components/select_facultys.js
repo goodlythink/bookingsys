@@ -1,4 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { loadFacultys } from '../actions/facultyAction';
+
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -7,8 +10,24 @@ class SelectFacultys extends Component{
         super(props)
 
         this.state = {
+            optionFacultys: [],
             selectValue: ''
         }
+    }
+
+    componentDidMount() {
+        this.props.loadFacultys();
+        //console.log('facultys', this.props.facultyList.facultys);
+        this.renderSelect();
+    }
+
+    renderSelect() {
+        let optionFacultys = []
+        this.props.facultyList.facultys.map(({ id, name }) => {
+            optionFacultys = [...optionFacultys, { value: id, label: name }]
+        })
+
+        this.setState({ optionFacultys });
     }
 
     updateValue = (newValue) => {
@@ -18,12 +37,22 @@ class SelectFacultys extends Component{
     }
 
     render() {
-        const { input, label, loadOptions, meta: { touched, error, invalid, warning, active } } = this.props
+        const { input, label, meta: { touched, error, invalid, warning, active } } = this.props
+        const { optionFacultys } = this.state;
+       
+        /*
+        let optionFacultys = []
+        this.props.facultyList.facultys.map(({ id, name }) => {
+            optionFacultys = [...optionFacultys, { value: id, label: name }]
+        })
+        */
+        
+
         return (
             <div className={`form-group ${touched && error ? 'has-danger' : ''}`}>
         <label>{label}</label>
         <Select    
-            options={loadOptions}
+            options={optionFacultys}
             value={this.state.selectValue}
             onChange={this.updateValue}        
         />
@@ -45,4 +74,9 @@ const getOptions = (input, callback) => {
     }, 500);
 }
 
-export default SelectFacultys;
+const mapStateToProps = (state) => {
+    return {
+        facultyList: state.facultys.facultyList
+    }
+}
+export default connect(mapStateToProps, { loadFacultys })(SelectFacultys);

@@ -3,7 +3,6 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadDeparts, deleteDepart, saveDepart, loadDepart, resetDepart } from '../../actions/departAction';
-import { loadFacultys } from '../../actions/facultyAction';
 
 import { Modal, ModalHeader } from 'reactstrap';
 import { Loading, ErrorPage } from '../../components/layouts';
@@ -18,8 +17,7 @@ class Depart extends Component {
         super(props);
         this.state = {
             modal: false,
-            modalTitle: '',
-            facultys: []
+            modalTitle: ''
         }
     }
 
@@ -29,7 +27,6 @@ class Depart extends Component {
 
     componentDidMount() {
         this.props.loadDeparts();
-        this.props.loadFacultys();
     }
 
     handleNew = () => {
@@ -68,16 +65,9 @@ class Depart extends Component {
         })
     }
 
-    facultySearch = (term) => {
-        this.props.loadFacultys(term);
-    }
-
     render() {
         const { loading, error, departs } = this.props.departList;
-        const { facultys } = this.props.facultyList;
-
         const departSearch = _.debounce(term => { this.departSearch(term) }, 500);
-        const facultySearch = _.debounce(term => { this.facultySearch(term) }, 500);
 
         return (
             <div className="animated fadeIn">
@@ -115,8 +105,6 @@ class Depart extends Component {
                         data={this.props.departShow.depart}
                         onSubmit={this.handleSubmit}
                         onToggle={this.toggle}
-                        onSearchFacultyChange={facultySearch}
-                        dataFacultys={facultys}
                     />
                 </Modal>
             </div>
@@ -127,10 +115,9 @@ class Depart extends Component {
 const mapStateToProps = (state) => {
     return {
         departList: state.departs.departList,
-        departShow: state.departs.departShow,
-        facultyList: state.facultys.facultyList
+        departShow: state.departs.departShow
     }
 }
 export default connect(mapStateToProps,
-    { loadDeparts, deleteDepart, saveDepart, loadDepart, resetDepart, loadFacultys })
+    { loadDeparts, deleteDepart, saveDepart, loadDepart, resetDepart })
     (Depart);
